@@ -75,6 +75,7 @@ jobs:
       run: |
           $Location = "${{ inputs.Location }}" 
           $dryrun = ""
+          Write-Host "${{ inputs.DryRun }}"
           if (${{ inputs.DryRun }} -eq 'true') {
             $dryrun = "-DryRun"
             Write-Host "In Loop"
