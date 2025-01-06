@@ -31,29 +31,29 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v3
       
-    - name: Replace tokens in **/*.json
-      uses: qetza/replacetokens-action@v1
-      with:
-         sources: '**/*.json'
-         variables: '[${{ toJSON(vars) }}, ${{ toJSON(secrets) }}]'
-         token-prefix: '#{'
-         token-suffix: '}#'
+    # - name: Replace tokens in **/*.json
+    #   uses: qetza/replacetokens-action@v1
+    #   with:
+    #      sources: '**/*.json'
+    #      variables: '[${{ toJSON(vars) }}, ${{ toJSON(secrets) }}]'
+    #      token-prefix: '#{'
+    #      token-suffix: '}#'
    
-    - name: Delete unwanted integration runtime
-      run: |
-          $deletePattern = "${{ vars.deletefilespattern }}"
-          $irsourcefolder = "${{ vars.irsourcefolder }}"
-          $patterns = $deletePattern -replace '.*\{(.*)\}.*', '$1' -split ','
-          $patterns | ForEach-Object { Write-Output "Pattern: $_" }
-          foreach ($pattern in $patterns)
-          {
-            Write-Host "Processing - $pattern"
-            Get-ChildItem -Path $irsourcefolder -Recurse | Where-Object { $_.Name -like $pattern } | Remove-Item -Force
-          }
+    # - name: Delete unwanted integration runtime
+    #   run: |
+    #       $deletePattern = "${{ vars.deletefilespattern }}"
+    #       $irsourcefolder = "${{ vars.irsourcefolder }}"
+    #       $patterns = $deletePattern -replace '.*\{(.*)\}.*', '$1' -split ','
+    #       $patterns | ForEach-Object { Write-Output "Pattern: $_" }
+    #       foreach ($pattern in $patterns)
+    #       {
+    #         Write-Host "Processing - $pattern"
+    #         Get-ChildItem -Path $irsourcefolder -Recurse | Where-Object { $_.Name -like $pattern } | Remove-Item -Force
+    #       }
 
-    - name: Copy staged integration runtime to project folder
-      run: |
-          copy ./ADF/integrationRuntime ./ADF/APPS -Recurse    
+    # - name: Copy staged integration runtime to project folder
+    #   run: |
+    #       copy ./ADF/integrationRuntime ./ADF/APPS -Recurse    
           
     - name: Install Datafactory Az tools
       run: |
@@ -62,13 +62,13 @@ jobs:
           Install-Module azure.datafactory.tools -AllowClobber -Force
           Get-Module azure.datafactory.tools -ListAvailable | Import-Module
     
-    - name: Login to Az
-      uses: azure/login@v2
-      with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-        enable-AzPSSession: true
+    # - name: Login to Az
+    #   uses: azure/login@v2
+    #   with:
+    #     client-id: ${{ secrets.AZURE_CLIENT_ID }}
+    #     tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+    #     subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+    #     enable-AzPSSession: true
     
     - name: Publish to ADF instance
       run: |
