@@ -77,7 +77,8 @@ jobs:
           $dryrun = ""
           Write-Host "${{ inputs.DryRun }}"
           if ("${{ inputs.DryRun }}" -eq "true") {
-            $dryrun = "-DryRun"
-            Write-Host "In Loop"
+            Publish-AdfV2FromJson -RootFolder "${{ vars.datafactorypath }}" -ResourceGroupName "${{ vars.resourcegroup }}" -DataFactoryName "${{ vars.datafactory }}" -Location "$Location" -DryRun
+          }else {
+           Publish-AdfV2FromJson -RootFolder "${{ vars.datafactorypath }}" -ResourceGroupName "${{ vars.resourcegroup }}" -DataFactoryName "${{ vars.datafactory }}" -Location "$Location"
           }
-          Publish-AdfV2FromJson -RootFolder "${{ vars.datafactorypath }}" -ResourceGroupName "${{ vars.resourcegroup }}" -DataFactoryName "${{ vars.datafactory }}" -Location "$Location" $dryrun 
+           
