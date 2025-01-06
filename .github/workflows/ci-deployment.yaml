@@ -18,7 +18,9 @@ on:
       DryRun:
         type: boolean
         description: Select to run Dry Run or preview ADF deployment
-   
+
+run-name: Deploy to ${{ inputs.Environment }} by @${{ github.actor }}
+
 permissions:
   id-token: write
   contents: read
