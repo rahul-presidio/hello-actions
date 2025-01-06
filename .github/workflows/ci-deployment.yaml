@@ -26,6 +26,7 @@ permissions:
 jobs:
   Deploy-ADF-Dev:
     runs-on: windows-latest
+    environment: ${{ inputs.Environment }}
 
     steps:
     - name: Checkout Code
