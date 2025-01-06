@@ -29,8 +29,8 @@ jobs:
     environment: ${{ inputs.Environment }}
 
     steps:
-    # - name: Checkout Code
-    #   uses: actions/checkout@v3
+    - name: Checkout Code
+      uses: actions/checkout@v3
       
     # - name: Replace tokens in **/*.json
     #   uses: qetza/replacetokens-action@v1
@@ -56,12 +56,12 @@ jobs:
     #   run: |
     #       copy ./ADF/integrationRuntime ./ADF/APPS -Recurse    
           
-    # - name: Install Datafactory Az tools
-    #   run: |
-    #       Install-Module Az.Resources -Force -AllowClobber
-    #       Install-Module Az.DataFactory -MinimumVersion "1.10.0" -Force -AllowClobber
-    #       Install-Module azure.datafactory.tools -AllowClobber -Force
-    #       Get-Module azure.datafactory.tools -ListAvailable | Import-Module
+    - name: Install Datafactory Az tools
+      run: |
+          Install-Module Az.Resources -Force -AllowClobber
+          Install-Module Az.DataFactory -MinimumVersion "1.10.0" -Force -AllowClobber
+          Install-Module azure.datafactory.tools -AllowClobber -Force
+          Get-Module azure.datafactory.tools -ListAvailable | Import-Module
     
     # - name: Login to Az
     #   uses: azure/login@v2
