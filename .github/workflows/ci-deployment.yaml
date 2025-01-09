@@ -1,24 +1,9 @@
 name: ADF Release pipeline
 
-on:
-  workflow_dispatch:
-    inputs:
-      Environment:
-        type: environment
-        description: Select the Environment for ADF deployment
-        required: true
-      Location:
-        type: choice
-        description: Select the location for ADF deployment
-        required: false
-        default: 'East US 2'
-        options: 
-        - East US 2
-        - East US
-      DryRun:
-        type: boolean
-        description: Select to run Dry Run or preview ADF deployment
-
+on: 
+  push:
+    branches:
+    - main
 run-name: Deploy to ${{ inputs.Environment }} by @${{ github.actor }}
 
 permissions:
