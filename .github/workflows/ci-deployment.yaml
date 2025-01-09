@@ -21,6 +21,4 @@ jobs:
    
     - name: Delete unwanted integration runtime
       run: |
-          git clone --branch master --single-branch https://github.com/microsoft/azure-pipelines-tasks.git
-          cd azure-pipelines-tasks/Tasks/WindowsMachineFileCopyV2
-          ./WindowsMachineFileCopy.ps1
+          robocopy
