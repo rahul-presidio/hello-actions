@@ -21,4 +21,11 @@ jobs:
    
     - name: Delete unwanted integration runtime
       run: |
-          robocopy
+          $User = "rahul"
+          $PWord = ConvertTo-SecureString -String "Admin@123hello" -AsPlainText -Force
+          $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $User, $PWord
+          New-PSDrive -Name "N" -PSProvider "FileSystem"  -root "\\135.237.96.171\d:\Actions" -credential $Credential
+          $src = 'c:\data'
+          $dst = 'n:\data'
+          robocopy $src $dst test.sh 
+          Remove-PSDrive -Name "N"
