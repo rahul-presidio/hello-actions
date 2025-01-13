@@ -8,7 +8,7 @@ on:
   
 jobs:
   Deploy-ADF-Dev:
-    runs-on:  rahul-win-1
+    runs-on: Windows
 
     steps:
     - name: Checkout Code
