@@ -19,7 +19,7 @@ jobs:
           $User = "userdev"
           $PWord = ConvertTo-SecureString -String "P@sswOrd1234" -AsPlainText -Force
           $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $User, $PWord
-          New-PSDrive -Name "Z" -PSProvider "FileSystem"  -root "\\devcomp01" -credential $Credential -Persist
+          New-PSDrive -Name "Z" -PSProvider "FileSystem"  -root "\\devcomp01\C$\Scripts\Portfolio" -credential $Credential -Persist
           $src = 'pwsh'
           $dst = 'Z:C$\Scripts\Portfolio'
           robocopy $src $dst .
