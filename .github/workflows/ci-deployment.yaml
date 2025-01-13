@@ -3,29 +3,24 @@ name: ADF Release pipeline
 on: 
   push:
     branches:
-    - main
-run-name: Deploy to ${{ inputs.Environment }} by @${{ github.actor }}
+    - pwsh-test
 
-permissions:
-  id-token: write
-  contents: read
   
 jobs:
   Deploy-ADF-Dev:
-    runs-on: windows-latest
-    environment: ${{ inputs.Environment }}
+    runs-on:  rahul-win-1
 
     steps:
     - name: Checkout Code
       uses: actions/checkout@v3
    
-    - name: Delete unwanted integration runtime
+    - name: Copy Files
       run: |
-          $User = "rahul"
-          $PWord = ConvertTo-SecureString -String "Admin@123hello" -AsPlainText -Force
+          $User = "userdev"
+          $PWord = ConvertTo-SecureString -String "P@sswOrd1234" -AsPlainText -Force
           $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $User, $PWord
-          New-PSDrive -Name "N" -PSProvider "FileSystem"  -root "\\135.237.96.171\Actions" -credential $Credential
-          $src = 'c:\data'
+          New-PSDrive -Name "N" -PSProvider "FileSystem"  -root "\\devcomp01\C$\Scripts\Portfolio" -credential $Credential -Persist
+          $src = 'pwsh'
           $dst = 'n:\data'
-          robocopy $src $dst test.sh 
+          robocopy $src $dst .
           Remove-PSDrive -Name "N"
