@@ -23,4 +23,3 @@ jobs:
           New-PSDrive -Name "WFCPSDrive" -PSProvider FileSystem -Root $dst  -credential $Credential
           $src = 'pwsh'
           robocopy $src $dst ""
-          # Remove-PSDrive -Name 'WFCPSDrive' -Force
