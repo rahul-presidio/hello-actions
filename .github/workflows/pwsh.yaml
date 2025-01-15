@@ -35,7 +35,7 @@ jobs:
           $machineCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ${{ vars.ADMIN_LOGIN }}, $secureAdminPassword
           $machineShare = Get-MachineShare -fqdn ${{ vars.MACHINE_NAME }} -targetPath ${{ vars.DESTINATION_FOLDER }}    
           $destinationNetworkPath = Get-DestinationNetworkPath -targetPath ${{ vars.DESTINATION_FOLDER }} -machineShare $machineShare
-          Write-Host "Destination $destinationNetworkPath"
+          
           New-PSDrive -Name "WFCPSDrive" -PSProvider FileSystem -Root $destinationNetworkPath  -credential $machineCredential
           robocopy ${{ vars.SOURCE_DIRECTORY }} $destinationNetworkPath "" ; if ($lastexitcode -lt 8) { $global:LASTEXITCODE = $null }
           Remove-PSDrive -Name 'WFCPSDrive' -Force
