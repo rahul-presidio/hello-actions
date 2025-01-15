@@ -47,6 +47,20 @@ jobs:
 
               return ""
           }
+          function Replace-First(
+                [string]$text,
+                [string]$search, 
+                [string]$replace
+                )
+            {
+                $pos = $text.IndexOf($search);
+                if ($pos -le 0)
+                {
+                    return $text;
+                }
+
+                return $text.Substring(0, $pos) + $replace + $text.Substring($pos + $search.Length);
+            }
 
           $secureAdminPassword = ConvertTo-SecureString ${{ vars.password }} -AsPlainText -Force
           $machineCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ${{ vars.ADMINLOGIN }}, $secureAdminPassword
