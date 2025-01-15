@@ -5,7 +5,6 @@ on:
     branches:
     - pwsh-test
 
-  
 jobs:
   Deploy-ADF-Dev:
     runs-on: Windows
@@ -17,36 +16,16 @@ jobs:
    
     - name: Copy Files
       run: |
-          function Get-DestinationNetworkPath(
-              [string]$targetPath,
-              [string]$machineShare
-          )
-          {
-              if(-not $machineShare)
-              {
-                  return $targetPath
-              }
+          function Get-DestinationNetworkPath([string]$targetPath,[string]$machineShare)
+          {if(-not $machineShare){ return $targetPath}
+          $targetSpecificPath = Replace-First $targetPath ":" '$'    
+          return [io.path]::Combine($machineShare, $targetSpecificPath) }   
 
-              $targetSpecificPath = Replace-First $targetPath ":" '$'    
-              return [io.path]::Combine($machineShare, $targetSpecificPath)    
-          }   
-
-          function Get-MachineShare(
-              [string]$fqdn,
-              [string]$targetPath
-              )
-          {
-              if([bool]([uri]$targetPath).IsUnc)
-              {
-                  return $targetPath
-              }
-              if($fqdn)
-              {
-                  return [IO.Path]::DirectorySeparatorChar + [IO.Path]::DirectorySeparatorChar + $fqdn
-              }
-
-              return ""
-          }
+          function Get-MachineShare([string]$fqdn,[string]$targetPath)
+          {if([bool]([uri]$targetPath).IsUnc){ return $targetPath }
+              if($fqdn){return [IO.Path]::DirectorySeparatorChar + [IO.Path]::DirectorySeparatorChar + $fqdn}
+          return ""}
+          
           function Replace-First(
                 [string]$text,
                 [string]$search, 
