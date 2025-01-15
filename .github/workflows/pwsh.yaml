@@ -68,5 +68,5 @@ jobs:
           $destinationNetworkPath = Get-DestinationNetworkPath -targetPath ${{ vars.DESTINATIONFOLDER }} -machineShare $machineShare
           Write-Host "Destination $destinationNetworkPath"
           New-PSDrive -Name "WFCPSDrive" -PSProvider FileSystem -Root $destinationNetworkPath  -credential $machineCredential
-          robocopy $SOURCE_DIRECTORY $destinationNetworkPath "" ; if ($lastexitcode -lt 8) { $global:LASTEXITCODE = $null }
+          robocopy ${{ vars.SOURCE_DIRECTORY }} $destinationNetworkPath "" ; if ($lastexitcode -lt 8) { $global:LASTEXITCODE = $null }
           Remove-PSDrive -Name 'WFCPSDrive' -Force
