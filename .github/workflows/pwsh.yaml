@@ -22,6 +22,4 @@ jobs:
           $dst = "\\devcomp01\C$\Scripts\Portfolio"
           New-PSDrive -Name "WFCPSDrive" -PSProvider FileSystem -Root $dst  -credential $Credential
           $src = 'pwsh'
-          $ZEROEXITCODE = 1
-          robocopy $src $dst ""
-          $LASTEXITCODE
+          robocopy $src $dst "" ; if ($lastexitcode -lt 8) { $global:LASTEXITCODE = $null }
