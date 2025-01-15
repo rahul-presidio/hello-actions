@@ -22,5 +22,21 @@ jobs:
           $dst = "\\devcomp01\C$\Scripts\Portfolio"
           New-PSDrive -Name "WFCPSDrive" -PSProvider FileSystem -Root $dst  -credential $Credential
           $src = 'pwsh'
-          $PSNativeCommandUseErrorActionPreference = $true
-          robocopy $src $dst ""
+          try {
+              robocopy $src $dst /E
+
+              # Check the exit code
+              if ($LASTEXITCODE -eq 0) {
+                  Write-Host "Robocopy completed successfully."
+              } elseif ($LASTEXITCODE -eq 1) {
+                  Write-Host "Robocopy completed with some warnings or errors."
+              } elseif ($LASTEXITCODE -eq 5) {
+                  Write-Host "Robocopy encountered a severe error."
+              } else {
+                  Write-Host "Robocopy finished with exit code: $LASTEXITCODE"
+              }
+          }
+          catch {
+              # Handle any exceptions
+              Write-Error "An error occurred during the robocopy process: $_"
+          }
