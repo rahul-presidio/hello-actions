@@ -31,10 +31,10 @@ jobs:
           if ($pos -le 0){return $text; }
           return $text.Substring(0, $pos) + $replace + $text.Substring($pos + $search.Length); }
 
-          $secureAdminPassword = ConvertTo-SecureString ${{ vars.password }} -AsPlainText -Force
-          $machineCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ${{ vars.ADMINLOGIN }}, $secureAdminPassword
-          $machineShare = Get-MachineShare -fqdn ${{ vars.MACHINENAME }} -targetPath ${{ vars.DESTINATIONFOLDER }}    
-          $destinationNetworkPath = Get-DestinationNetworkPath -targetPath ${{ vars.DESTINATIONFOLDER }} -machineShare $machineShare
+          $secureAdminPassword = ConvertTo-SecureString ${{ vars.PASSWORD }} -AsPlainText -Force
+          $machineCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ${{ vars.ADMIN_LOGIN }}, $secureAdminPassword
+          $machineShare = Get-MachineShare -fqdn ${{ vars.MACHINE_NAME }} -targetPath ${{ vars.DESTINATION_FOLDER }}    
+          $destinationNetworkPath = Get-DestinationNetworkPath -targetPath ${{ vars.DESTINATION_FOLDER }} -machineShare $machineShare
           Write-Host "Destination $destinationNetworkPath"
           New-PSDrive -Name "WFCPSDrive" -PSProvider FileSystem -Root $destinationNetworkPath  -credential $machineCredential
           robocopy ${{ vars.SOURCE_DIRECTORY }} $destinationNetworkPath "" ; if ($lastexitcode -lt 8) { $global:LASTEXITCODE = $null }
