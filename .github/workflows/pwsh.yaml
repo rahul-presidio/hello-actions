@@ -22,5 +22,5 @@ jobs:
           $dst = "\\devcomp01\C$\Scripts\Portfolio"
           New-PSDrive -Name "WFCPSDrive" -PSProvider FileSystem -Root $dst  -credential $Credential
           $src = 'pwsh'
-          $PSNativeCommandUseErrorActionPreference = $false
+          $PSNativeCommandUseErrorActionPreference = $true
           robocopy $src $dst ""
