@@ -49,7 +49,7 @@ jobs:
           }
 
           $secureAdminPassword = ConvertTo-SecureString ${{ vars.password }} -AsPlainText -Force
-          $machineCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $User, $secureAdminPassword
+          $machineCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ${{ vars.ADMINLOGIN }}, $secureAdminPassword
           $machineShare = Get-MachineShare -fqdn ${{ vars.MACHINENAME }} -targetPath ${{ vars.DESTINATIONFOLDER }}    
           $destinationNetworkPath = Get-DestinationNetworkPath -targetPath ${{ vars.DESTINATIONFOLDER }} -machineShare $machineShare
           Write-Host "Destination $destinationNetworkPath"
