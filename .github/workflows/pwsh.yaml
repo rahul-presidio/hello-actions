@@ -22,7 +22,4 @@ jobs:
           $dst = "\\devcomp01\C$\Scripts\Portfolio"
           New-PSDrive -Name "WFCPSDrive" -PSProvider FileSystem -Root $dst  -credential $Credential
           $src = 'pwsh'
-          robocopy $src $dst "" /COPY:DAT /E
-          if ($LASTEXITCODE -ge 8){
-            Write-Output "error found"
-          }
+          robocopy $src $dst "" /COPY:DAT /E || $(if ($LASTEXITCODE -gt 3) { throw $LASTEXITCODE })
