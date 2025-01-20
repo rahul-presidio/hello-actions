@@ -28,31 +28,32 @@ jobs:
     - run: dotnet tool install -g microsoft.sqlpackage
     
 
-    - name: Build Customer
-      run: |
-        msbuild Customer/Customer.sqlproj /p:Configuration=Release
+    # - name: Build Customer
+    #   run: |
+    #     msbuild Customer/Customer.sqlproj /p:Configuration=Release
 
     
-    - name: Build Sales
-      run: |
-        msbuild Sales/Sales.sqlproj  /p:Configuration=Release
+    # - name: Build Sales
+    #   run: |
+    #     msbuild Sales/Sales.sqlproj  /p:Configuration=Release
 
 
-    - name: Build 
-      uses: actions/upload-artifact@v4
-      with:
-          name: customer-build-${{ github.run_number }}
-          path: |
-            Customer/bin
+    # - name: Build 
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #       name: customer-build-${{ github.run_number }}
+    #       path: |
+    #         Customer/bin
 
-    - name: Build 
-      uses: actions/upload-artifact@v4
-      with:
-          name: sales-build-${{ github.run_number }}
-          path: |
-            Sales/bin
+    # - name: Build 
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #       name: sales-build-${{ github.run_number }}
+    #       path: |
+    #         Sales/bin
 
     - run: sqlpackage /Action:Script /SourceFile:"Customer/bin/Output/Customer.dacpac" /TargetServerName:"rahul-sql-001.database.windows.net" /TargetDatabaseName:"Customer" /TargetUser:"sqladmin" /TargetPassword:"T#7vP2kY!mQz@9Lw"    /OutputPath:"customerUpdate.sql" /p:BlockOnPossibleDataLoss=False /p:IncludeTransactionalScripts=true
+    - run: sqlpackage /Action:Publish /SourceFile:"Customer/bin/Output/Customer.dacpac" /TargetServerName:"rahul-sql-001.database.windows.net" /TargetDatabaseName:"Customer" /TargetUser:"sqladmin" /TargetPassword:"T#7vP2kY!mQz@9Lw"    /OutputPath:"customerUpdate.sql" /p:BlockOnPossibleDataLoss=False
     
     - run: ls
     - run: cat customerUpdate.sql
