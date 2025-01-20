@@ -9,6 +9,7 @@
 
   <PropertyGroup>
     <TargetFramework>SQLServer</TargetFramework>
+    <SqlServerVersion>SqlAzure</SqlServerVersion>
     <ProjectGuid>{B6D9C5E2-6B93-40A8-A0E8-4F53D9539F1E}</ProjectGuid>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql150DatabaseSchemaProvider</DSP>
   </PropertyGroup>
