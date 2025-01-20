@@ -29,6 +29,7 @@ permissions:
 jobs:
   Dev:
     runs-on: ubuntu-latest
+    if:  ${{ inputs.DEV }} 
     environment: DEV
 
     steps:
