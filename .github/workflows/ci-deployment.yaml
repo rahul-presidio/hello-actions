@@ -39,7 +39,7 @@ jobs:
   UAT:
     runs-on: ubuntu-latest
     environment: UAT
-    if:  ${{ always() }}
+    if:  ${{ inputs.UAT &&  always() }}
     needs: [Dev]
 
     steps:
