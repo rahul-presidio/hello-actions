@@ -25,7 +25,7 @@ jobs:
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v2
 
-    - run: sqlpackage /Action:Script /SourceFile:"Customer/Customer.dacpac" " /TargetServerName:"rahul-sql-001.database.windows.net" /TargetDatabaseName:"Customer" /TargetUser:"sqladmin" /TargetPassword:"T#7vP2kY!mQz@9Lw"    /OutputPath:"customerUpdate.sql" /p:BlockOnPossibleDataLoss=False /p:IncludeTransactionalScripts=true
+    - run: sqlpackage /Action:Script /SourceFile:"Customer/Customer.dacpac" /TargetServerName:"rahul-sql-001.database.windows.net" /TargetDatabaseName:"Customer" /TargetUser:"sqladmin" /TargetPassword:"T#7vP2kY!mQz@9Lw"    /OutputPath:"customerUpdate.sql" /p:BlockOnPossibleDataLoss=False /p:IncludeTransactionalScripts=true
     
     - run: ls
     - run: cat customerUpdate.sql
