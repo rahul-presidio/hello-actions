@@ -31,15 +31,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Code
+      if: ${{ inputs.build_artifact == '' }}
       uses: actions/checkout@v3
       
     - name: Build 
       uses: actions/upload-artifact@v4
+      if: ${{ inputs.build_artifact == '' }}
       with:
           name: build-${{ github.run_number }}
           path: |
             .parameters
             test.sh
+
+    - name: Download Artifact
+      if: ${{ inputs.build_artifact != '' }}
+      uses: actions/download-artifact@v4
+      with:
+        name: ${{ inputs.build_artifact }}
+    
 
   DEV:
     runs-on: ubuntu-latest
@@ -65,7 +74,7 @@ jobs:
     - name: Download Artifact
       uses: actions/download-artifact@v4
       with:
-        name: build-${{ github.run_number }}
+        name:  ${{ inputs.build_artifact != '' && inputs.build_artifact || format('build-{0}', github.run_number) }}
 
     - run: cat test.sh
 
