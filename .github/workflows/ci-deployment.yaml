@@ -20,41 +20,65 @@ on:
         required: false
         type: string
 
-run-name: ADF Release
+run-name: ADF Release-$GITHUB_RUN_NUMBER
 
 permissions:
   id-token: write
   contents: read
   
 jobs:
-  Dev:
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Build 
+      uses: actions/upload-artifact@v4
+      with:
+          name: build-$GITHUB_RUN_NUMBER
+          path: |
+            .parameters
+            test.sh
+
+  DEV:
     runs-on: ubuntu-latest
     if:  ${{ inputs.DEV }} 
     environment: DEV
+    needs: [Build]
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
+    - name: Download Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: build-$GITHUB_RUN_NUMBER
+
+    - run: cat test.sh
 
   UAT:
     runs-on: ubuntu-latest
     environment: UAT
     if:  ${{ inputs.UAT &&  always() }}
-    needs: [Dev]
+    needs: [DEV]
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
+    - name: Download Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: build-$GITHUB_RUN_NUMBER
+
+    - run: cat test.sh
 
   PROD:
     runs-on: ubuntu-latest
     if:  ${{ inputs.PROD &&  always() }}
     environment: prod
-    needs: [Dev, UAT]
+    needs: [DEV, UAT]
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
+    - name: Download Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: build-$GITHUB_RUN_NUMBER
+
+    - run: cat test.sh
 
 
            
