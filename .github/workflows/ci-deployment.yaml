@@ -39,6 +39,7 @@ jobs:
   UAT:
     runs-on: ubuntu-latest
     environment: UAT
+    if:  ${{ inputs.UAT &&  always() }}
     needs: [Dev]
 
     steps:
@@ -47,6 +48,7 @@ jobs:
 
   PROD:
     runs-on: ubuntu-latest
+    if:  ${{ inputs.PROD &&  always() }}
     environment: prod
     needs: [Dev, UAT]
 
