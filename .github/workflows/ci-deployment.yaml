@@ -3,6 +3,27 @@ name: ADF Release pipeline
 on:
   workflow_dispatch:
     inputs:
+      Platform:
+        description: 'Platform'
+        required: true
+        type: choice
+        options:
+          - Apterra
+          - Aqua
+          - Eliant
+          - Foundation Home Loans
+          - HaydockFinance
+          - HR Data
+          - Liquidity Matrix
+          - MidCap
+          - NewFi
+          - Petros
+          - PK Air
+          - Redding Ridge
+          - Reference
+          - SolidBriq
+          - Spreads
+          - Wheels
       DEV:
         type: boolean
         description: DEV
@@ -20,7 +41,7 @@ on:
         required: false
         type: string
 
-run-name: ADF Release-${{ github.run_number }}
+run-name: ${{ inputs.Platform }} ADF Release-${{ github.run_number }}
 
 permissions:
   id-token: write
