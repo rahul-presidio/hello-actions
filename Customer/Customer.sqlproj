@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <ItemGroup>
+    <Build Include="Tables\Customers.sql" />
+    <Build Include="Tables\Orders.sql" />
+    <Build Include="Functions\GetTotalOrders.sql" />
+    <Build Include="StoredProcedures\InsertNewOrder.sql" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>SQLServer</TargetFramework>
+    <SqlServerVersion>SqlServer2017</SqlServerVersion>
+    <ProjectGuid>{B6D9C5E2-6B93-40A8-A0E8-4F53D9539F1E}</ProjectGuid>
+  </PropertyGroup>
+</Project>

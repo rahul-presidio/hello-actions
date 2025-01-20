@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <ItemGroup>
+    <Build Include="Tables\Products.sql" />
+    <Build Include="Tables\SalesTransactions.sql" />
+    <Build Include="Functions\CalculateTotalSales.sql" />
+    <Build Include="StoredProcedures\InsertSaleTransaction.sql" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>SQLServer</TargetFramework>
+    <ProjectGuid>{A7C8B9D1-5A63-4F93-A6E7-DFB78FCA451D}</ProjectGuid>
+  </PropertyGroup>
+</Project>
