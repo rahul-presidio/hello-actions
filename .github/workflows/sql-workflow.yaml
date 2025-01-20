@@ -27,7 +27,7 @@ jobs:
     
     - name: Build Customer
       run: |
-        msbuild Customer/Customer.sqlproj /p:VisualStudioVersion=16.0 /t:Build
+        msbuild Customer/Customer.sqlproj /t:Build
 
     
     - name: Build Sales
