@@ -20,7 +20,7 @@ on:
         required: false
         type: string
 
-run-name: ADF Release-$GITHUB_RUN_NUMBER
+run-name: ADF Release-${{ github.run_number }}
 
 permissions:
   id-token: write
@@ -51,7 +51,7 @@ jobs:
     - name: Download Artifact
       uses: actions/download-artifact@v4
       with:
-        name: build-$GITHUB_RUN_NUMBER
+        name: build-${{ github.run_number }}
 
     - run: cat test.sh
 
@@ -65,7 +65,7 @@ jobs:
     - name: Download Artifact
       uses: actions/download-artifact@v4
       with:
-        name: build-$GITHUB_RUN_NUMBER
+        name: build-${{ github.run_number }}
 
     - run: cat test.sh
 
@@ -79,7 +79,7 @@ jobs:
     - name: Download Artifact
       uses: actions/download-artifact@v4
       with:
-        name: build-$GITHUB_RUN_NUMBER
+        name: build-${{ github.run_number }}
 
     - run: cat test.sh
 
