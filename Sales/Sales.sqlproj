@@ -4,11 +4,18 @@
     <Build Include="Tables\Products.sql" />
     <Build Include="Tables\SalesTransactions.sql" />
     <Build Include="Functions\CalculateTotalSales.sql" />
-    <Build Include="StoredProcedures\InsertSaleTransaction.sql" />
+    <Build Include="Stored Procedures\InsertSaleTransaction.sql" />
   </ItemGroup>
 
   <PropertyGroup>
     <TargetFramework>SQLServer</TargetFramework>
     <ProjectGuid>{A7C8B9D1-5A63-4F93-A6E7-DFB78FCA451D}</ProjectGuid>
   </PropertyGroup>
+   <PropertyGroup>  
+   <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion> 
+  <TargetFrameworkMoniker>.NETFramework,Version=$(TargetFrameworkVersion)</TargetFrameworkMoniker>  
+</PropertyGroup>  
+<Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+<Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+
 </Project>
