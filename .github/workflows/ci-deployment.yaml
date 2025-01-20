@@ -27,7 +27,7 @@ permissions:
   contents: read
   
 jobs:
-  Deploy-ADF-Dev:
+  Dev:
     runs-on: ubuntu-latest
     environment: DEV
 
@@ -35,17 +35,19 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v3
 
-  Deploy-ADF-UAT:
+  UAT:
     runs-on: ubuntu-latest
     environment: UAT
+    needs: [Dev]
 
     steps:
     - name: Checkout Code
       uses: actions/checkout@v3
 
-  Deploy-ADF-Prod:
+  PROD:
     runs-on: ubuntu-latest
     environment: prod
+    needs: [Dev, UAT]
 
     steps:
     - name: Checkout Code
