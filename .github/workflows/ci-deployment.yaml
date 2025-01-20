@@ -5,7 +5,7 @@ on:
     inputs:
       DEV:
         type: boolean
-        description: Dev
+        description: DEV
         default: true
       UAT:
         type: boolean
@@ -39,7 +39,7 @@ jobs:
   UAT:
     runs-on: ubuntu-latest
     environment: UAT
-    if:  ${{ inputs.UAT &&  always() }}
+    if:  ${{ always() }}
     needs: [Dev]
 
     steps:
