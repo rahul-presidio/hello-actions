@@ -27,12 +27,12 @@ jobs:
     
     - name: Build Customer
       run: |
-        msbuild Customer/Customer.sqlproj /p:VisualStudioVersion=16.0 /t:Clean /t:Build /p:Configuration=Release
+        msbuild Customer/Customer.sqlproj /p:VisualStudioVersion=16.0 /t:Clean
 
     
     - name: Build Sales
       run: |
-        msbuild Sales/Sales.sqlproj  /p:VisualStudioVersion=16.0 /t:Clean /t:Build /p:Configuration=Release
+        msbuild Sales/Sales.sqlproj  /p:VisualStudioVersion=16.0 /t:Clean
 
     - run: ls
     # - name: Build 
@@ -54,5 +54,3 @@ jobs:
         name: build-${{ github.run_number }}
 
     - run: ls
-
-           
