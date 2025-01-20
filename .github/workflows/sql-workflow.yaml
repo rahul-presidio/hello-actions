@@ -27,12 +27,12 @@ jobs:
     
     - name: Build Customer
       run: |
-        msbuild Customer/Customer.sqlproj /t:Build
+        msbuild Customer/Customer.sqlproj /p:Configuration=Release
 
     
     - name: Build Sales
       run: |
-        msbuild Sales/Sales.sqlproj  /p:VisualStudioVersion=16.0 /t:Build
+        msbuild Sales/Sales.sqlproj  /p:Configuration=Release
 
     - run: ls
     # - name: Build 
