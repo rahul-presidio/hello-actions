@@ -25,11 +25,15 @@ jobs:
     - name: Add msbuild to PATH
       uses: microsoft/setup-msbuild@v2
     
-    - name: Build app for release
+    - name: Build Customer
       run: |
         msbuild Customer/Customer.sqlproj /p:VisualStudioVersion=16.0 /t:Clean /t:Build /p:Configuration=Release
-        msbuild Sales/Sales.sqlproj /p:VisualStudioVersion=16.0 /t:Clean /t:Build -property:Configuration=Release
-      
+
+    
+    - name: Build Sales
+      run: |
+        msbuild Sales/Sales.sqlproj  /p:VisualStudioVersion=16.0 /t:Clean /t:Build /p:Configuration=Release
+
     - run: ls
     # - name: Build 
     #   uses: actions/upload-artifact@v4
