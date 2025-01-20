@@ -1,10 +1,26 @@
 name: ADF Release pipeline
 
-on: 
-  push:
-    branches:
-    - main
-run-name: Deploy to ${{ inputs.Environment }} by @${{ github.actor }}
+on:
+  workflow_dispatch:
+    inputs:
+      DEV:
+        type: boolean
+        description: Dev
+        default: true
+      UAT:
+        type: boolean
+        description: UAT
+        default: true
+      PROD:
+        type: boolean
+        description: PROD
+        default: true
+      build_artifact:
+        description: 'Build Artifact'
+        required: false
+        type: string
+
+run-name: ADF Release
 
 permissions:
   id-token: write
@@ -13,19 +29,15 @@ permissions:
 jobs:
   Deploy-ADF-Dev:
     runs-on: windows-latest
-    environment: ${{ inputs.Environment }}
 
     steps:
     - name: Checkout Code
       uses: actions/checkout@v3
-   
-    - name: Delete unwanted integration runtime
+          
+    - name: Install Datafactory Az tools
       run: |
-          $User = "rahul"
-          $PWord = ConvertTo-SecureString -String "Admin@123hello" -AsPlainText -Force
-          $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $User, $PWord
-          New-PSDrive -Name "N" -PSProvider "FileSystem"  -root "\\135.237.96.171\Actions" -credential $Credential
-          $src = 'c:\data'
-          $dst = 'n:\data'
-          robocopy $src $dst test.sh 
-          Remove-PSDrive -Name "N"
+          Install-Module Az.Resources -Force -AllowClobber
+          Install-Module Az.DataFactory -MinimumVersion "1.10.0" -Force -AllowClobber
+
+
+           
