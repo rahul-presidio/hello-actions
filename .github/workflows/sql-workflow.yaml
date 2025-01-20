@@ -27,7 +27,7 @@ jobs:
     
     - name: Build app for release
       run: |
-        msbuild Customer/Customer.sqlproj -t:rebuild -verbosity:diag -property:Configuration=Release
+        msbuild Customer/Customer.sqlproj /p:VisualStudioVersion=16.0 /t:Clean /t:Build /p:Configuration=Release
         msbuild Sales/Sales.sqlproj -t:rebuild -verbosity:diag -property:Configuration=Release
       
     - run: ls
