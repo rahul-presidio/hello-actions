@@ -55,8 +55,9 @@ jobs:
     - run: sqlpackage /Action:Script /SourceFile:"Customer/bin/Output/Customer.dacpac" /TargetServerName:"rahul-sql-001.database.windows.net" /TargetDatabaseName:"Customer" /TargetUser:"sqladmin" /TargetPassword:"T#7vP2kY!mQz@9Lw"    /OutputPath:"customerUpdate.sql" /p:BlockOnPossibleDataLoss=False /p:IncludeTransactionalScripts=true
     # - run: sqlpackage /Action:Publish /SourceFile:"Customer/bin/Output/Customer.dacpac" /TargetServerName:"rahul-sql-001.database.windows.net" /TargetDatabaseName:"Customer" /TargetUser:"sqladmin" /TargetPassword:"T#7vP2kY!mQz@9Lw" 
     
-    - run: ls
+    # - run: Install-Module -Name SqlServer
     - run: cat customerUpdate.sql
+    - run: Invoke-Sqlcmd -ServerInstance "rahul-sql-001.database.windows.net" -Database "Customer" -Username "sqladmin" -Password "T#7vP2kY!mQz@9Lw"  -InputFile "customerUpdate.sql"
     
 
   # DEV:
