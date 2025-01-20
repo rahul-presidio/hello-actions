@@ -28,16 +28,28 @@ permissions:
   
 jobs:
   Deploy-ADF-Dev:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
+    environment: DEV
 
     steps:
     - name: Checkout Code
       uses: actions/checkout@v3
-          
-    - name: Install Datafactory Az tools
-      run: |
-          Install-Module Az.Resources -Force -AllowClobber
-          Install-Module Az.DataFactory -MinimumVersion "1.10.0" -Force -AllowClobber
+
+  Deploy-ADF-UAT:
+    runs-on: ubuntu-latest
+    environment: UAT
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+  Deploy-ADF-Prod:
+    runs-on: ubuntu-latest
+    environment: prod
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
 
 
            
