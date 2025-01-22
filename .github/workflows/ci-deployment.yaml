@@ -78,12 +78,8 @@ jobs:
     needs: [Build]
 
     steps:
-    - name: Download Artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: build-${{ github.run_number }}
 
-    - run: cat test.sh
+    - run: error
 
   UAT:
     runs-on: ubuntu-latest
