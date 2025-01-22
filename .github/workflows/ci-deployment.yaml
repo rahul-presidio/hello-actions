@@ -97,7 +97,7 @@ jobs:
 
   PROD:
     runs-on: ubuntu-latest
-    if:  ${{ inputs.DEV || inputs.UAT && inputs.PROD && !failure() && always()  }} 
+    if:  ${{ inputs.PROD && !failure() && always()  }} 
     environment: prod
     needs: [DEV, UAT]
 
