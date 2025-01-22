@@ -24,22 +24,6 @@ on:
           - SolidBriq
           - Spreads
           - Wheels
-      DEV:
-        type: boolean
-        description: DEV
-        default: true
-      UAT:
-        type: boolean
-        description: UAT
-        default: true
-      PROD:
-        type: boolean
-        description: PROD
-        default: true
-      build_artifact:
-        description: 'Build Artifact'
-        required: false
-        type: string
 
 run-name: ${{ inputs.Platform }} ADF Release-${{ github.run_number }}
 
@@ -73,7 +57,6 @@ jobs:
 
   DEV:
     runs-on: ubuntu-latest
-    if:  ${{ inputs.DEV }} 
     environment: DEV
     needs: [Build]
 
@@ -88,7 +71,6 @@ jobs:
   UAT:
     runs-on: ubuntu-latest
     environment: UAT
-    if:  ${{ inputs.UAT &&  always() }}
     needs: [DEV]
 
     steps:
@@ -101,7 +83,6 @@ jobs:
 
   PROD:
     runs-on: ubuntu-latest
-    if:  ${{ inputs.PROD &&  always() }}
     environment: prod
     needs: [DEV, UAT]
 
