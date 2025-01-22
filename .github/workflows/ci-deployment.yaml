@@ -97,7 +97,7 @@ jobs:
 
   PROD:
     runs-on: ubuntu-latest
-    if:  ${{ inputs.DEV || inputs.UAT && inputs.PROD &&!failure()}} || ${{ inputs.PROD && always()  }}
+    if:  ${{ inputs.DEV || inputs.UAT && inputs.PROD && !failure()}} || ${{ inputs.PROD && always()  }}
     environment: prod
     needs: [DEV, UAT]
 
@@ -107,7 +107,7 @@ jobs:
       with:
         name: build-${{ github.run_number }}
 
-    - run: cat test.sh
+    - run: echo ${{ inputs.DEV || inputs.UAT && inputs.PROD && !failure()}} || ${{ inputs.PROD && always()  }}
 
 
            
