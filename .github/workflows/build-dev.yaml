@@ -32,7 +32,14 @@ jobs:
         CHANGED_FOLDERS=$(git diff --name-only HEAD HEAD~1 |  grep 'Azure Data Factory/FIG/' | cut -d '/' -f3 | sort | uniq)
         echo "Changed Folders: $CHANGED_FOLDERS"
         FOLDERS_ARRAY=$(echo "$CHANGED_FOLDERS" | tr '\n' '\n' | sed 's/^\(.*\)$/\"&\"/g' | tr '\n' ', ' | sed 's/,$//;s/^/folders=[/;s/$/]/')
+        WILDCARD_PATHS=""
+        while IFS= read -r line; do
+          WILDCARD_PATHS+="Azure Data Factory/FIG/$line/**\n"
+        done <<< "$CHANGED_FOLDERS"
+
+        echo "WILDCARD_PATHS=$WILDCARD_PATHS" >> "$GITHUB_OUTPUT"
         echo $FOLDERS_ARRAY >> "$GITHUB_OUTPUT"
+
         cat $GITHUB_OUTPUT
 
   Dev:
