@@ -28,25 +28,20 @@ jobs:
     - name: Identify changed folders under 'FIG'
       id: folders
       run: |
-        # Get the list of folders that have changed in the 'FIG' directory
+        mkdir dev-artifacts
+
         CHANGED_FOLDERS=$(git diff --name-only HEAD HEAD~1 |  grep 'Azure Data Factory/FIG/' | cut -d '/' -f3 | sort | uniq)
         echo "Changed Folders: $CHANGED_FOLDERS"
+        
         FOLDERS_ARRAY=$(echo "$CHANGED_FOLDERS" | tr '\n' '\n' | sed 's/^\(.*\)$/\"&\"/g' | tr '\n' ', ' | sed 's/,$//;s/^/folders=[/;s/$/]/')
-        WILDCARD_PATHS=""
-        mkdir dev-artifacts
+        
         while IFS= read -r line; do
-          WILDCARD_PATHS+="Azure Data Factory/FIG/$line/** \n "
           cp "Azure Data Factory/FIG/$line/" "dev-artifacts/" -r
         done <<< "$CHANGED_FOLDERS"
 
         cp "Azure Data Factory/FIG/integrationRuntime/" "dev-artifacts/" -r
-
-        echo "WILDCARD_PATHS=$WILDCARD_PATHS" >> "$GITHUB_OUTPUT"
         echo $FOLDERS_ARRAY >> "$GITHUB_OUTPUT"
-
         cat $GITHUB_OUTPUT
-
-        tree dev-artifacts
 
     - name: Build 
       uses: actions/upload-artifact@v4
@@ -70,5 +65,5 @@ jobs:
         run: |
           echo ${{ matrix.folder }}
           tree
-          cd ${{ matrix.folder }}
+          cd "${{ matrix.folder }}"
           ls
