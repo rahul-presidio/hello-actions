@@ -44,4 +44,4 @@ jobs:
     steps:
       - name: Define Folder
         run: |
-          echo ${{ matrix.folders }}
+          echo ${{ matrix.folder }}
