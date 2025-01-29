@@ -34,13 +34,20 @@ jobs:
         FOLDERS_ARRAY=$(echo "$CHANGED_FOLDERS" | tr '\n' '\n' | sed 's/^\(.*\)$/\"&\"/g' | tr '\n' ', ' | sed 's/,$//;s/^/folders=[/;s/$/]/')
         WILDCARD_PATHS=""
         while IFS= read -r line; do
-          WILDCARD_PATHS+="Azure Data Factory/FIG/$line/**\n"
+          WILDCARD_PATHS+="Azure Data Factory/FIG/$line/** \n "
         done <<< "$CHANGED_FOLDERS"
 
         echo "WILDCARD_PATHS=$WILDCARD_PATHS" >> "$GITHUB_OUTPUT"
         echo $FOLDERS_ARRAY >> "$GITHUB_OUTPUT"
 
         cat $GITHUB_OUTPUT
+
+    - name: Build 
+      uses: actions/upload-artifact@v4
+      with:
+          name: build-${{ github.run_number }}
+          path: |
+            ${{  steps.folders.outputs.WILDCARD_PATHS }}
 
   Dev:
     runs-on: ubuntu-latest
@@ -49,6 +56,13 @@ jobs:
       matrix:
         folder: ${{ fromJSON(needs.Build.outputs.folders) }}
     steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-${{ github.run_number }}
       - name: Define Folder
         run: |
           echo ${{ matrix.folder }}
+          tree
+          cd ${{ matrix.folder }}
+          ls
