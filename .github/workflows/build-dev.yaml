@@ -5,7 +5,7 @@ on:
     branches:
       - dev
 
-run-name: ${{ inputs.Platform }} Build-${{ github.sha::7 }}
+run-name: ${{ inputs.Platform }} Build-${{ github.sha.substring(0, 7) }}
 
 permissions:
   id-token: write
@@ -39,6 +39,7 @@ jobs:
 
     - name: Build 
       uses: actions/upload-artifact@v4
+      if: ${{ steps.folders.outputs.folders != '[""]'}}
       with:
           name: build-${{ github.run_number }}
           path: |
@@ -46,6 +47,7 @@ jobs:
 
   Dev:
     runs-on: ubuntu-latest
+    if: ${{ needs.Build.outputs.folders != '[""]'}}
     needs: Build
     strategy:
       matrix:
