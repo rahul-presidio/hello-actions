@@ -33,21 +33,27 @@ jobs:
         echo "Changed Folders: $CHANGED_FOLDERS"
         FOLDERS_ARRAY=$(echo "$CHANGED_FOLDERS" | tr '\n' '\n' | sed 's/^\(.*\)$/\"&\"/g' | tr '\n' ', ' | sed 's/,$//;s/^/folders=[/;s/$/]/')
         WILDCARD_PATHS=""
+        mkdir dev-artifacts
         while IFS= read -r line; do
           WILDCARD_PATHS+="Azure Data Factory/FIG/$line/** \n "
+          cp "Azure Data Factory/FIG/$line/" "dev-artifacts/" -r
         done <<< "$CHANGED_FOLDERS"
+
+        cp "Azure Data Factory/FIG/integrationRuntime/" "dev-artifacts/" -r
 
         echo "WILDCARD_PATHS=$WILDCARD_PATHS" >> "$GITHUB_OUTPUT"
         echo $FOLDERS_ARRAY >> "$GITHUB_OUTPUT"
 
         cat $GITHUB_OUTPUT
 
+        tree dev-artifacts
+
     - name: Build 
       uses: actions/upload-artifact@v4
       with:
           name: build-${{ github.run_number }}
           path: |
-            ${{  steps.folders.outputs.WILDCARD_PATHS }}
+            dev-artifacts/**
 
   Dev:
     runs-on: ubuntu-latest
