@@ -18,5 +18,21 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v3
     
-    - name: Files
-      run: git log --oneline --all
+    - name: Fetch all history for all branches
+      run: git fetch --prune --unshallow
+
+    - name: Identify changed folders under 'FIG'
+      run: |
+        # Get the list of folders that have changed in the 'FIG' directory
+        CHANGED_FOLDERS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^FIG/' | cut -d'/' -f2 | sort | uniq)
+        
+        echo "Changed Folders:"
+        echo "$CHANGED_FOLDERS"
+        
+        # Set the changed folders as a GitHub Actions output
+        echo "::set-output name=changed_folders::$(echo "$CHANGED_FOLDERS" | tr '\n' ',')"
+
+    - name: Use changed folders in next steps
+      run: |
+        # Access the changed folders from the output of the previous step
+        echo "Changed folders are: ${{ steps.check-changes.outputs.changed_folders }}"
