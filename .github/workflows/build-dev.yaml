@@ -26,7 +26,6 @@ jobs:
     - name: Identify changed folders under 'FIG'
       run: |
         # Get the list of folders that have changed in the 'FIG' directory
-        CHANGED_FOLDERS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^FIG/' | cut -d'/' -f2 | sort | uniq)
-        
+        CHANGED_FOLDERS=$(git diff --name-only HEAD HEAD~1 |  grep 'Azure Data Factory/FIG/' | cut -d '/' -f3 | sort | uniq)
         echo "Changed Folders:"
         echo "$CHANGED_FOLDERS"
