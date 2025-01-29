@@ -28,11 +28,3 @@ jobs:
         
         echo "Changed Folders:"
         echo "$CHANGED_FOLDERS"
-        
-        # Set the changed folders as a GitHub Actions output
-        echo "::set-output name=changed_folders::$(echo "$CHANGED_FOLDERS" | tr '\n' ',')"
-
-    - name: Use changed folders in next steps
-      run: |
-        # Access the changed folders from the output of the previous step
-        echo "Changed folders are: ${{ steps.check-changes.outputs.changed_folders }}"
