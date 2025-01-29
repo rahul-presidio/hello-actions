@@ -14,18 +14,34 @@ permissions:
 jobs:
   Build:
     runs-on: ubuntu-latest
+    outputs:
+      folders: ${{ steps.folders.outputs.folders }}
     steps:
     - name: Checkout Code
       uses: actions/checkout@v3
       with:
-        fetch-depth: 3
+        fetch-depth: 2
     
     - name: Fetch all history for all branches
       run: git log --oneline --all
 
     - name: Identify changed folders under 'FIG'
+      id: folders
       run: |
         # Get the list of folders that have changed in the 'FIG' directory
         CHANGED_FOLDERS=$(git diff --name-only HEAD HEAD~1 |  grep 'Azure Data Factory/FIG/' | cut -d '/' -f3 | sort | uniq)
-        echo "Changed Folders:"
-        echo "$CHANGED_FOLDERS"
+        echo "Changed Folders: $CHANGED_FOLDERS"
+        FOLDERS_ARRAY=$(echo "$CHANGED_FOLDERS" | tr '\n' '\n' | sed 's/^\(.*\)$/\"&\"/g' | tr '\n' ', ' | sed 's/,$//;s/^/folders=[/;s/$/]/')
+        echo $FOLDERS_ARRAY >> "$GITHUB_OUTPUT"
+        cat $GITHUB_OUTPUT
+
+  Dev:
+    runs-on: ubuntu-latest
+    needs: Build
+    strategy:
+      matrix:
+        folder: ${{ fromJSON(needs.Build.outputs.folders) }}
+    steps:
+      - name: Define Folder
+        run: |
+          echo ${{ matrix.folders }}
