@@ -5,7 +5,7 @@ on:
     branches:
       - dev
 
-run-name: ${{ inputs.Platform }} ADF Release-${{ github.run_number }}
+run-name: ${{ inputs.Platform }} Build-${{ github.run_number }}
 
 permissions:
   id-token: write
@@ -19,4 +19,4 @@ jobs:
       uses: actions/checkout@v3
     
     - name: Files
-      run: git log --oneline --all --no-pager
+      run: git log --oneline --all
