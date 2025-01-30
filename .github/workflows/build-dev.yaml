@@ -4,8 +4,10 @@ on:
   push:
     branches:
       - dev
+    paths:
+      - 'Azure Data Factory/**'
 
-run-name: Build ${{ github.sha.substring(0, 7) }}
+run-name: Build
 
 permissions:
   id-token: write
