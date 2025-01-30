@@ -1,1 +1,1 @@
-colors=["Hello","World New"]
+colors=["Hello", "New"]
