@@ -26,7 +26,7 @@ jobs:
     - name: Copy conf to Web 1
       uses: ./.github/copy-files-windows
       with:
-        Source: 'httpd.conf'
+        Source: 'uat'
         Machines: 'machine_web_1'
         Admin_Login: 'userdev'
         Password: 'P@ssw0rd1234'
