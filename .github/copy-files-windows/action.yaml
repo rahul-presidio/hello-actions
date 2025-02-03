@@ -20,7 +20,7 @@ runs:
   using: "composite"
   steps:
   - name: Copy Files
-    shell: pwsh
+    shell: powershell
     run: |
       function Get-DestinationNetworkPath([string]$targetPath,[string]$machineShare)
       { if(-not $machineShare){ return $targetPath}
