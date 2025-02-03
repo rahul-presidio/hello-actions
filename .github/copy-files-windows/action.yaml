@@ -37,6 +37,52 @@ runs:
       if ($pos -le 0){return $text; }
       return $text.Substring(0, $pos) + $replace + $text.Substring($pos + $search.Length); }
 
+      function Create-DestinationDirectory(
+        [string]$path
+      )
+      {
+          $destPath = $path
+          $foundParentPath = $false
+          $isRoot = $false
+
+          Write-Verbose "Creating path to directory: $path"
+          while($destPath -and (-not $foundParentPath))
+          {
+              try
+              {
+                  New-PSDrive -Name WFCPSDrive -PSProvider FileSystem -Root $destPath -Credential $psCredentialObject -ErrorAction 'Stop'
+                  $foundParentPath = $true
+                  Write-Verbose "Found parent path"
+                  $relativePath = $path.Substring($destPath.Length)
+                  New-Item -ItemType Directory WFCPSDrive:$relativePath -ErrorAction 'Stop' -Force
+                  Write-Verbose "Created directory"
+              }
+              catch 
+              {
+                  Write-Verbose "Caught exception: $_.Exception.Message"
+                  $parentPath = Split-Path -Path $destPath -Parent
+                  if(($parentPath.Length -eq 0) -and ($isRoot -eq $false))
+                  {
+                      $destPath = [IO.Path]::DirectorySeparatorChar + [IO.Path]::DirectorySeparatorChar + ([System.Uri]($destPath)).Host
+                      $isRoot = $true
+                      Write-Verbose "Check if root path exists: $destPath"
+                  }
+                  else
+                  {
+                      $destPath = $parentPath
+                      Write-Verbose "Check if parent path exists: $destPath"
+                  }
+              }
+              finally
+              {
+                  if($foundParentPath -eq $true)
+                  {
+                      Remove-PSDrive -Name WFCPSDrive
+                  }
+              }
+          }
+      }
+
       $isFileCopy = Test-Path -Path  ${{ inputs.Source }} -PathType Leaf
       $sourceDirectory = ${{ inputs.Source }}
       $filesToCopy = ""
@@ -45,10 +91,14 @@ runs:
           $filesToCopy = Split-Path ${{ inputs.Source }} -Leaf
       }
 
+
       $secureAdminPassword = ConvertTo-SecureString ${{ inputs.Password }} -AsPlainText -Force
       $machineCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ${{ inputs.ADMIN_LOGIN }}, $secureAdminPassword
       $machineShare = Get-MachineShare -fqdn ${{ inputs.Machines }} -targetPath ${{ inputs.Destination_Folder }}    
       $destinationNetworkPath = Get-DestinationNetworkPath -targetPath ${{ inputs.Destination_Folder }} -machineShare $machineShare
+      
+      Create-DestinationDirectory -path $destinationNetworkPath
+      
       Write-Host "New-PSDrive -Name "WFCPSDrive" -PSProvider FileSystem -Root $destinationNetworkPath  -credential $machineCredential"
       New-PSDrive -Name "WFCPSDrive" -PSProvider FileSystem -Root $destinationNetworkPath  -credential $machineCredential
       robocopy "$sourceDirectory" "$destinationNetworkPath" $filesToCopy ; if ($lastexitcode -lt 8) { $global:LASTEXITCODE = $null }
