@@ -14,7 +14,7 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v3
    
-    - id: foo
+    - name: Copy Files to Windows Backup
       uses: ./.github/copy-files-windows
       with:
         Source: '\\machine_web_1\C$\Apache24\conf\httpd.conf'
