@@ -15,7 +15,7 @@ jobs:
       uses: actions/checkout@v3
    
     - id: foo
-      uses: ./.github/copy-files-windows@pwsh-test
+      uses: ./.github/copy-files-windows
       with:
         Source: '\\machine_web_1\C$\Apache24\conf\httpd.conf'
         Machines: 'machine_web_1'
