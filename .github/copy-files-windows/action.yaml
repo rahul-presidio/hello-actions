@@ -84,7 +84,7 @@ runs:
       }
 
       $isFileCopy = Test-Path -Path  ${{ inputs.Source }} -PathType Leaf
-      $sourceDirectory = ${{ inputs.Source }}
+      $sourceDirectory = "${{ inputs.Source }}"
       $filesToCopy = ""
       if($isFileCopy){
           $sourceDirectory = Split-Path ${{ inputs.Source }}
