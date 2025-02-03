@@ -22,3 +22,12 @@ jobs:
         Admin_Login: 'userdev'
         Password: 'P@ssw0rd1234'
         Destination_Folder: 'C:/Apache24\config-backup\${{ github.run_number }}'
+
+    - name: Copy conf to Web 1
+      uses: ./.github/copy-files-windows
+      with:
+        Source: 'httpd.conf'
+        Machines: 'machine_web_1'
+        Admin_Login: 'userdev'
+        Password: 'P@ssw0rd1234'
+        Destination_Folder: 'C:/Apache24\conf'
