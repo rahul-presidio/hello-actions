@@ -48,7 +48,7 @@ runs:
       $secureAdminPassword = ConvertTo-SecureString ${{ inputs.Password }} -AsPlainText -Force
       $machineCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ${{ inputs.ADMIN_LOGIN }}, $secureAdminPassword
       $machineShare = Get-MachineShare -fqdn ${{ inputs.Machines }} -targetPath ${{ inputs.Destination_Folder }}    
-      $destinationNetworkPath = Get-DestinationNetworkPath -targetPath ${{ vars.Destination_Folder }} -machineShare $machineShare
+      $destinationNetworkPath = Get-DestinationNetworkPath -targetPath ${{ inputs.Destination_Folder }} -machineShare $machineShare
       
       New-PSDrive -Name "WFCPSDrive" -PSProvider FileSystem -Root $destinationNetworkPath  -credential $machineCredential
       robocopy "$sourceDirectory" "$destinationNetworkPath" $filesToCopy ; if ($lastexitcode -lt 8) { $global:LASTEXITCODE = $null }
