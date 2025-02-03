@@ -1,0 +1,56 @@
+name: 'Copy Files to Windows'
+description: 'Copy Files to Windows Machines using Robocopy'
+inputs:
+  Source: 
+    description: 'Absolute path of the source folder or file on the local machine, or a UNC Share'
+    required: true
+  Machines: 
+    description: 'Provide a comma separated list of machine IP addresses or FQDNs'
+    required: true
+  Admin_Login: 
+    description: 'Administrator login for the target machines'
+    required: true
+  Password: 
+    description: 'Password for administrator login for the target machines'
+    required: true
+  Destination_Folder: 
+    description: 'Local Path on the target machines or an accessible UNC path for copying the files from the source'
+    required: true
+runs:
+  using: "composite"
+  steps:
+  - name: Copy Files
+    shell: pwsh
+    run: |
+      function Get-DestinationNetworkPath([string]$targetPath,[string]$machineShare)
+      { if(-not $machineShare){ return $targetPath}
+      $targetSpecificPath = Replace-First $targetPath ":" '$'    
+      return [io.path]::Combine($machineShare, $targetSpecificPath) }   
+
+      function Get-MachineShare([string]$fqdn,[string]$targetPath)
+      { if([bool]([uri]$targetPath).IsUnc){ return $targetPath }
+          if($fqdn){return [IO.Path]::DirectorySeparatorChar + [IO.Path]::DirectorySeparatorChar + $fqdn }
+      return "" }
+
+      function Replace-First([string]$text,[string]$search,[string]$replace )
+      {$pos = $text.IndexOf($search);
+      if ($pos -le 0){return $text; }
+      return $text.Substring(0, $pos) + $replace + $text.Substring($pos + $search.Length); }
+
+      $isFileCopy = Test-Path -Path  ${{ inputs.Source }} -PathType Leaf
+      $sourceDirectory = ${{ inputs.Source }}
+      $filesToCopy = ""
+      if($isFileCopy){
+          $sourceDirectory = Split-Path ${{ inputs.Source }}
+          $filesToCopy = Split-Path ${{ inputs.Source }} -Leaf
+      }
+
+      $secureAdminPassword = ConvertTo-SecureString ${{ inputs.Password }} -AsPlainText -Force
+      $machineCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ${{ inputs.ADMIN_LOGIN }}, $secureAdminPassword
+      $machineShare = Get-MachineShare -fqdn ${{ inputs.Machines }} -targetPath ${{ inputs.Destination_Folder }}    
+      $destinationNetworkPath = Get-DestinationNetworkPath -targetPath ${{ vars.Destination_Folder }} -machineShare $machineShare
+      
+      New-PSDrive -Name "WFCPSDrive" -PSProvider FileSystem -Root $destinationNetworkPath  -credential $machineCredential
+      robocopy "$sourceDirectory" "$destinationNetworkPath" $filesToCopy ; if ($lastexitcode -lt 8) { $global:LASTEXITCODE = $null }
+      Remove-PSDrive -Name 'WFCPSDrive' -Force
+

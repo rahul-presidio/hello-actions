@@ -1,4 +1,4 @@
-name: ADF Release pipeline
+name: Copy Release pipeline
 
 on: 
   push:
@@ -14,28 +14,11 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v3
    
-    - name: Copy Files
-      run: |
-          function Get-DestinationNetworkPath([string]$targetPath,[string]$machineShare)
-          { if(-not $machineShare){ return $targetPath}
-          $targetSpecificPath = Replace-First $targetPath ":" '$'    
-          return [io.path]::Combine($machineShare, $targetSpecificPath) }   
-
-          function Get-MachineShare([string]$fqdn,[string]$targetPath)
-          { if([bool]([uri]$targetPath).IsUnc){ return $targetPath }
-              if($fqdn){return [IO.Path]::DirectorySeparatorChar + [IO.Path]::DirectorySeparatorChar + $fqdn }
-          return "" }
-
-          function Replace-First([string]$text,[string]$search,[string]$replace )
-          {$pos = $text.IndexOf($search);
-          if ($pos -le 0){return $text; }
-          return $text.Substring(0, $pos) + $replace + $text.Substring($pos + $search.Length); }
-
-          $secureAdminPassword = ConvertTo-SecureString ${{ vars.PASSWORD }} -AsPlainText -Force
-          $machineCredential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList ${{ vars.ADMIN_LOGIN }}, $secureAdminPassword
-          $machineShare = Get-MachineShare -fqdn ${{ vars.MACHINE_NAME }} -targetPath ${{ vars.DESTINATION_FOLDER }}    
-          $destinationNetworkPath = Get-DestinationNetworkPath -targetPath ${{ vars.DESTINATION_FOLDER }} -machineShare $machineShare
-          
-          New-PSDrive -Name "WFCPSDrive" -PSProvider FileSystem -Root $destinationNetworkPath  -credential $machineCredential
-          robocopy ${{ vars.SOURCE_DIRECTORY }} $destinationNetworkPath "" ; if ($lastexitcode -lt 8) { $global:LASTEXITCODE = $null }
-          Remove-PSDrive -Name 'WFCPSDrive' -Force
+    - id: foo
+      uses: .github/copy-files-windows@pwsh-test
+      with:
+        Source: '\\machine_web_1\C$\Apache24\conf\httpd.conf'
+        Machines: 'machine_web_1'
+        Admin_Login: 'userdev'
+        Password: 'P@ssw0rd1234'
+        Destination_Folder: 'C:/Apache24\config-backup\${{ github.run_number }}'
