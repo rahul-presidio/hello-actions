@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Booking</title>
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        /* Hero Section with Subtle Background Image */
+        .hero {
+            background: url('https://via.placeholder.com/1920x800/3C8D99/FFFFFF?text=Find+Your+Perfect+Stay') center center/cover no-repeat;
+            padding: 120px 20px;
+            text-align: center;
+            color: white;
+            border-bottom: 5px solid #ff6347;
+            box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.6);
+        }
+
+        .hero h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #464343;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            color: #494444;
+        }
+
+        /* Hotel Search Form Styling */
+        .search-form {
+            background-color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-form input, .search-form select, .search-form button {
+            padding: 15px;
+            margin: 10px;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: #f4f4f9;
+        }
+
+        .search-form button {
+            background-color: #ff6347;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-weight: bold;
+        }
+
+        .search-form button:hover {
+            background-color: #e55347;
+        }
+
+        /* Hotel Options Section */
+        .options {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 40px;
+            padding: 20px;
+        }
+
+        .option-card {
+            background-color: white;
+            width: 30%;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+
+        .option-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .option-card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .option-card p {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #777;
+        }
+
+        .option-card .price {
+            font-size: 20px;
+            color: #ff6347;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .option-card button {
+            background-color: #ff6347;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .option-card button:hover {
+            background-color: #e55347;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <h1>Hotel Booking</h1>
+    </header>
+
+    <!-- Hero Section with Subtle Background Image -->
+    <section class="hero">
+        <h2>Find the Perfect Hotel</h2>
+        <p>Book your stay with ease. Discover the best hotels at unbeatable prices!</p>
+
+        <!-- Hotel Search Form -->
+        <form class="search-form" onsubmit="return handleSearch(event)">
+            <input type="text" id="location" placeholder="Destination (City)" required>
+            <input type="date" id="checkin-date" placeholder="Check-in Date" required>
+            <input type="date" id="checkout-date" placeholder="Check-out Date" required>
+            <select id="room-type" required>
+                <option value="">Select Room Type</option>
+                <option value="single">Single Room</option>
+                <option value="double">Double Room</option>
+                <option value="suite">Suite</option>
+            </select>
+            <button type="submit">Search Hotels</button>
+        </form>
+    </section>
+
+    <!-- Hotel Options Section -->
+    <section class="options">
+        <div class="option-card">
+            <h3>Hotel Paris</h3>
+            <p>Located in the heart of Paris, this luxurious hotel offers amazing city views and premium amenities.</p>
+            <div class="price">$250/night</div>
+            <button onclick="bookHotel('Paris')">Book Now</button>
+        </div>
+        <div class="option-card">
+            <h3>Hotel New York</h3>
+            <p>Stay at one of New York's most iconic hotels. Perfect for business and leisure travel.</p>
+            <div class="price">$400/night</div>
+            <button onclick="bookHotel('New York')">Book Now</button>
+        </div>
+        <div class="option-card">
+            <h3>Hotel Tokyo</h3>
+            <p>Experience luxury with a stay at Hotel Tokyo. Relax with stunning views and five-star service.</p>
+            <div class="price">$500/night</div>
+            <button onclick="bookHotel('Tokyo')">Book Now</button>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2025 HotelBooking.com | All Rights Reserved</p>
+    </footer>
+
+    <script>
+        // Handle hotel search form submission
+        function handleSearch(event) {
+            event.preventDefault();
+
+            const location = document.getElementById('location').value;
+            const checkinDate = document.getElementById('checkin-date').value;
+            const checkoutDate = document.getElementById('checkout-date').value;
+            const roomType = document.getElementById('room-type').value;
+
+            if (location && checkinDate && checkoutDate && roomType) {
+                alert(`Searching hotels in ${location} from ${checkinDate} to ${checkoutDate} with a ${roomType} room.`);
+            } else {
+                alert('Please fill out all fields!');
+            }
+        }
+
+        // Simulate hotel booking action
+        function bookHotel(destination) {
+            alert(`You have booked a hotel in ${destination}!`);
+        }
+    </script>
+
+</body>
+</html>
