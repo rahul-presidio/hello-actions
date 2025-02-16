@@ -105,7 +105,7 @@
 
     <!-- Header Section -->
     <header>
-        <h1>Flight / Hotel Booking</h1>
+        <h1>Booking Authentication</h1>
     </header>
 
     <!-- Hero Section with Subtle Background Image -->
