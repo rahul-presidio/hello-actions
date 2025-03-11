@@ -1,9 +1,10 @@
 name: Demo pipeline
 
 on:
+  workflow_dispatch:
   push:
     branches:
-      - dev
+      - main
 
 run-name: Demo
 
@@ -15,15 +16,6 @@ jobs:
   Build:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
-      
-    - name: Build 
-      uses: actions/upload-artifact@v4
-      with:
-          name: build-${{ github.run_number }}
-          path: |
-            .parameters
-            test.sh
+    - run: echo ${{ github.event_name }} ${{ github.event }}  ${{ github.ref_name }}
 
            
