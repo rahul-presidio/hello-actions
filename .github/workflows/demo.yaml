@@ -6,7 +6,7 @@ on:
     branches:
       - main
 
-run-name: Demo ${{ github.event.head_commit.message }}
+run-name: NLP SyntehtocAnalsys PROD ${{ github.event.head_commit.message }}
 
 permissions:
   id-token: write
